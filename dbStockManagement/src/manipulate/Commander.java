@@ -1,39 +1,22 @@
 package manipulate;
 import static java.lang.System.out;
-
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.channels.FileChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-
-import javax.sound.midi.ControllerEventListener;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
-import javax.swing.plaf.synth.SynthListUI;
-
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.Table;
-
-import com.mysql.fabric.xmlrpc.base.Array;
-
 import KeboardReder.ScannerRead;
 import data.DataTransaction;
 import data.Product;
@@ -110,7 +93,7 @@ public  class Commander implements Pagination {
 			dt=new DataTransaction();
 		//String date=DateFormat.getDateInstance(DateFormat.MEDIUM,Locale.UK).format(new Date());
 			long start=System.currentTimeMillis();
-			for(int i=1 ;i<=1E4;i++){
+			for(int i=1 ;i<=1E6;i++){
 				dt.writeAll(pro, new Product(i,"Fanta",11,10,"2015"));
 			}
 			//call method write Object
@@ -200,7 +183,6 @@ public  class Commander implements Pagination {
 							Product.setLastId(conId-1);//remove from ram
 							out.println("Product adding cancelled!");
 						}
-					
 					
 						this.menu();
 				break;
