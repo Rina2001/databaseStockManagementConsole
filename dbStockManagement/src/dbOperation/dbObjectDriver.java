@@ -25,7 +25,7 @@ public class dbObjectDriver {
 	public Connection getCon(){
 		try {
 			Class.forName("org.postgresql.Driver");
-			return DriverManager.getConnection("jdbc:postgresql://localhost:5433/dbStock?","rina","2001");
+			return DriverManager.getConnection("jdbc:postgresql://localhost:5434/dbStock?","rina","rina");
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -351,5 +351,38 @@ public class dbObjectDriver {
 		}
 		return false;
 	}
-	
+	/**
+	 * @Method GetLastID
+	 */
+	public int getLastRecord_Id(){
+		ResultSet rs=null;
+				String sql="select pro_id from tblproduct  order by pro_id DESC limit 1";
+				Connection  con=null;
+				PreparedStatement pstm=null;//=con.prepareStatement(sql);
+				try{
+					con=getCon();
+					pstm=con.prepareStatement(sql);
+					rs=pstm.executeQuery();
+					rs.next();
+					return rs.getInt("pro_id");
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					try {
+						con.rollback();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				finally {
+					try {
+						if(pstm!=null)pstm.close();
+						if(con!=null)con.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				return 0;
+	}
 }

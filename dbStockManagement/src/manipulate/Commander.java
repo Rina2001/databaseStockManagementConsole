@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 
 import javax.sound.midi.ControllerEventListener;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
+import javax.swing.plaf.synth.SynthListUI;
 
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
@@ -49,7 +50,7 @@ public  class Commander implements Pagination {
 	Properties prop; // get properties'\
 	int rowPos;
 	int proID;
-
+	private boolean isRecovery;
 	
 	public Commander() {
 		pro=new ArrayList<Product>();
@@ -73,19 +74,29 @@ public  class Commander implements Pagination {
 	  public void readTmpFile(){
 		  
 		  if(getLastWrting()!=null){
-				out.println("\nSave last record press \"Y\" or anykey to release");
+				out.print("\nSave last record press \"Y\" or anykey to release : ");
 				if (ScannerRead.ReadString().equals("y")) {
 					if(pro==null){
 						pro=new ArrayList<Product>();
 					}
 					pro.addAll(0,getLastWrting());
 					Collections.reverse(pro);
+					
+					System.out.println("Product number : " + pro.size());
+					Product.setLastId(pro.size());
 					new dbObjectDriver().insertSingleRecord(getLastWrting());
 					showList();
+					
+					
 					tmpSaving=null;
 					new AutoFile().clear("autoSaving.bak");
+					this.isRecovery=true;
+					
+					
 				}else{
 					new AutoFile().clear("autoSaving.bak");
+//					Product.setLastId(pro.size()+1);
+					this.isRecovery=false;
 				}
 			}
 	  }
@@ -122,14 +133,19 @@ public  class Commander implements Pagination {
 			System.out.println("Current Time Loading"+(stop-start));
 		if(pro!=null){
 			Collections.reverse(pro);
-			Product.setLastId(pro.size());
-		}
+//			Product.setLastId(pro.size());
+			if(this.isRecovery){
+				
+			}else{
+				Product.setLastId(new dbObjectDriver().getLastRecord_Id());
+			}
+		}		
 	}
 	/**
 	 * @Method ImportData
 	 * @throws Exception
 	 */
-
+	static int id;
 	public void menu(){
 		
 		Table t=new Table(1, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE, ShownBorders.SURROUND);
@@ -305,8 +321,14 @@ public  class Commander implements Pagination {
 			case "l":	last(); //navigate to last page
 				break;	
 				
-			case "s":	out.print("Search---|");
-						dt.search(pro, ScannerRead.ReadString());
+			case "s":	
+						out.print("Search---|");
+//						dt.search(pro, ScannerRead.ReadString());
+						String name= ScannerRead.ReadString();
+						dt.display(dt.search(pro, name), this.getPagePosition(),this.getNumRow());
+//						if (list ==null){
+//							System.out.println("Product not found for '"+name+"!");
+//						}
 						this.menu();
 				break;	//search record;
 				

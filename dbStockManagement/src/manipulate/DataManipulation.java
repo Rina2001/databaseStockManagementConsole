@@ -24,6 +24,7 @@ public interface DataManipulation {
 	public Object read(ArrayList<Product> table,int recordId);
 	public boolean update(ArrayList<Product> table,int proId,Product newRecord);
 	public boolean delete(ArrayList<Product> table,int proId);
-	public void search(ArrayList<Product> table,String name);
+//	public void search(ArrayList<Product> table,String name);
+	public ArrayList<Product> search(ArrayList<Product> table,String name);
 	
 }

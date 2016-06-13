@@ -37,12 +37,16 @@ public class DataTransaction implements DataManipulation{
 	@Override
 	public ArrayList<Product> display(ArrayList<Product> table,int position,int perpage){
 		ArrayList<Product> list=new ArrayList<>();
-		float devperPage= (float)table.size()/perpage;
+		int arrsize = table.size();
+		float devperPage= (float)arrsize/perpage;
 		int pageAmount= (int) Math.ceil(devperPage);  
 //		System.out.println(pageAount);
 		if(pageAmount<position){
 			position=pageAmount;
 		}
+		
+		if(perpage>arrsize) perpage=arrsize;
+		
 		int start=(position-1)*perpage;
 		int end=perpage+start;
 		if(position==pageAmount){
@@ -164,40 +168,15 @@ public class DataTransaction implements DataManipulation{
 	}
 
 	@Override
-	public void search(ArrayList<Product> table, String name) {
-		CellStyle cs = new CellStyle(HorizontalAlign.center);
-		Table tb = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE, ShownBorders.ALL);
-	    tb.setColumnWidth(0, 10, 14);
-	    tb.setColumnWidth(1, 25, 30);
-	    tb.setColumnWidth(2, 10, 16);
-	    tb.setColumnWidth(3, 10, 16);
-	    tb.setColumnWidth(4, 10, 16);
-	    
-		tb.addCell("ID", cs);
-		tb.addCell("Name",cs); 
-		tb.addCell("Unit Price",cs); 
-		tb.addCell("Qty",cs);
-		tb.addCell("Imported Date",cs);
-		int i=0;
+	public ArrayList<Product> search(ArrayList<Product> table, String name) {
+		ArrayList<Product> list=new ArrayList<>();
 		for(Product pro : table){
 			if(pro.getName().toLowerCase().contains(name.toLowerCase())){
-				i++;
-				//System.out.println("search:"+pro.getName());
-				tb.addCell(String.valueOf(pro.getId()),cs);
-				tb.addCell(pro.getName());
-				tb.addCell(String.valueOf(pro.getUnitprice()),cs);
-				tb.addCell(String.valueOf(pro.getQty()),cs);
-				tb.addCell(pro.getImportedDate(),cs);
+				list.add(pro);
 			}
 		}
-		if (i>0) {
-			System.out.println("Product found for '"+name+"' : "+i);
-			System.out.println(tb.render());
-		} else {
-			System.out.println("Product not found for '"+name+"!");
-		}
-
 		
+		return list;
 	}
 
 

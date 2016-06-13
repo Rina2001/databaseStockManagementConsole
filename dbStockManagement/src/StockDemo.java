@@ -17,10 +17,13 @@ class StockDemo {
         System.out.println();
         
         Commander cmd=new Commander();
-        //cmd.trun();//delete record
-     	//cmd.exportData();
+//        cmd.trun();//delete record
+//     	cmd.exportData();
+     
         cmd.importData();
-//        cmd.readTmpFile();
+        cmd.readTmpFile();
+        
+        
        cmd.menu();
 
      	
